@@ -38,7 +38,7 @@ public class AccountServiceImpl implements IAccountService {
 	@Override
 	public Account getAccount(Long id) throws Exception {
 		if (null == id) {
-			throw new Exception("Invalid ID");
+			throw new AccountBadRequestException("Invalid ID");
 		} else {
 			return accountRepository.findById(id)
 					.orElseThrow(() -> new AccountNotFoundException("Account with ID " + id + " cannot be found"));
