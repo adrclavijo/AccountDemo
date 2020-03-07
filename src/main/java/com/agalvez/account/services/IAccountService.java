@@ -3,6 +3,8 @@ package com.agalvez.account.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.agalvez.account.dto.TransferDTO;
+import com.agalvez.account.dto.TransferResponseDTO;
 import com.agalvez.account.entities.Account;
 
 public interface IAccountService {
@@ -14,5 +16,7 @@ public interface IAccountService {
 	public Page<Account> getAllAccounts(Pageable page) throws Exception;
 	
 	public Account createAccount(Account account) throws Exception;
+	
+	public TransferResponseDTO transfer(TransferDTO transfer) throws Exception;
 
 }

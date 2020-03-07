@@ -9,8 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.agalvez.account.dto.TransferDTO;
+import com.agalvez.account.dto.TransferResponseDTO;
 import com.agalvez.account.entities.Account;
 import com.agalvez.account.exceptions.AccountBadRequestException;
+import com.agalvez.account.exceptions.AccountForbiddenException;
 import com.agalvez.account.exceptions.AccountNotFoundException;
 import com.agalvez.account.repositories.AccountRepository;
 import com.agalvez.account.services.IAccountService;
@@ -58,6 +61,35 @@ public class AccountServiceImpl implements IAccountService {
 			} else {
 				return accountList.get(0);
 			}
+		}
+	}
+
+	@Transactional
+	@Override
+	public TransferResponseDTO transfer(TransferDTO transfer) throws Exception {
+		if (null == transfer) {
+			throw new AccountBadRequestException("Invalid transfer data values");
+		} else if (transfer.getOriginAccountId() != null
+				&& transfer.getOriginAccountId().equals(transfer.getDestinationAccountId())) {
+			throw new AccountBadRequestException("Both accounts are the same one");
+		} else {
+			Account origin = getAccount(transfer.getOriginAccountId());
+			Account destination = getAccount(transfer.getDestinationAccountId());
+			if (origin.getBalance() < transfer.getAmount() && !origin.isTreasury()) {
+				throw new AccountForbiddenException("The origin account has not enough balance for this transfer");
+			}
+			// different currency check
+
+			origin.setBalance(origin.getBalance() - transfer.getAmount());
+			destination.setBalance(destination.getBalance() + transfer.getAmount());
+
+			TransferResponseDTO response = new TransferResponseDTO();
+			response.setAmount(transfer.getAmount());
+			response.setCurrency(transfer.getCurrency());
+			response.setOriginAccount(accountRepository.save(origin));
+			response.setDestinationAccount(accountRepository.save(destination));
+
+			return response;
 		}
 	}
 

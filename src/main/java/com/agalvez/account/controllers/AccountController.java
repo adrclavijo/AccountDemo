@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agalvez.account.dto.TransferDTO;
+import com.agalvez.account.dto.TransferResponseDTO;
 import com.agalvez.account.entities.Account;
 import com.agalvez.account.services.IAccountService;
 
@@ -45,4 +47,12 @@ public class AccountController {
 		logger.info(account);
 		return accountService.createAccount(account);		
 	}
+	
+	@PostMapping("/transfer")
+	public TransferResponseDTO transfer(@RequestBody TransferDTO transfer) throws Exception {
+		logger.info(transfer);
+		return accountService.transfer(transfer);
+		
+	}
+	
 }
