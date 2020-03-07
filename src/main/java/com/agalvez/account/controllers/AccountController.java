@@ -35,6 +35,11 @@ public class AccountController {
 		return accountService.getAllAccounts(PageRequest.of(page, pageSize));
 	}
 	
+	@GetMapping("/find/{name}")
+	public Account getAccount(@PathVariable("name") String name) throws Exception {
+		return accountService.findAccount(name);
+	}
+	
 	@PostMapping("/create")
 	public Account createAccount(@RequestBody Account account) throws Exception {
 		logger.info(account);
