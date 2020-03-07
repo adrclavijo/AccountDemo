@@ -79,6 +79,9 @@ public class AccountServiceImpl implements IAccountService {
 				throw new AccountForbiddenException("The origin account has not enough balance for this transfer");
 			}
 			// different currency check
+			if (!origin.getCurrency().equals(destination.getCurrency())) {
+				throw new AccountForbiddenException("The currency for both accounts is not the same");
+			}
 
 			origin.setBalance(origin.getBalance() - transfer.getAmount());
 			destination.setBalance(destination.getBalance() + transfer.getAmount());
