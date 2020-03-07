@@ -4,18 +4,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agalvez.account.entities.Account;
-import com.agalvez.account.enums.CurrencyEnum;
 import com.agalvez.account.services.IAccountService;
 
 @RestController
 @RequestMapping("/account")
-public class AcountController {
+public class AccountController {
 	
 	Logger logger = LogManager.getLogger();
 
@@ -23,15 +23,8 @@ public class AcountController {
 	IAccountService accountService;
 
 	@GetMapping("/get/{id}")
-	public Account getAccount(Long id) {
-
-		Account test = new Account();
-		test.setAccountId(1L);
-		test.setCurrency(CurrencyEnum.EUR);
-		test.setBalance(11L);
-		test.setTreasury(false);
-		
-		return test;
+	public Account getAccount(@PathVariable("id") Long id) throws Exception {
+		return accountService.getAccount(id);
 	}
 	
 	@PostMapping("/create")

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.agalvez.account.enums.CurrencyEnum;
 
@@ -32,9 +33,11 @@ public class Account implements Serializable {
 	private Long accountId;
 
 	@Column(length = 100)
+	@NotNull
 	private String name;
 
 	@Column(length = 3)
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private CurrencyEnum currency;
 
