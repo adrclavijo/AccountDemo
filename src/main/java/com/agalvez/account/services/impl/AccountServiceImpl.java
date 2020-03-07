@@ -3,6 +3,8 @@ package com.agalvez.account.services.impl;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.agalvez.account.entities.Account;
@@ -38,5 +40,12 @@ public class AccountServiceImpl implements IAccountService {
 					.orElseThrow(() -> new AccountNotFoundException("Account with ID " + id + " cannot be found"));
 		}
 	}
+
+	@Override
+	public Page<Account> getAllAccounts(Pageable page) throws Exception {
+		return accountRepository.findAll(page);
+	}
+	
+	
 
 }
